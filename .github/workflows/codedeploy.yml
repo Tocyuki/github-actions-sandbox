@@ -19,21 +19,23 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    environment:
-      name: dev
+    environment: dev
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:   
-      - uses: chrislennon/action-aws-cli@v1.1
-        env:
-          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}
-          AWS_DEFAULT_REGION=ap-northeast-1
+      - name: Checout
+        uses: actions/checkout@v2
+
+      - name: Create .env file
+        run: |
+          echo "AWS_DEFAULT_REGION=ap-northeast-1" >> .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          echo "AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}" >> .env
       
       - name: Create revision with CodeDeploy
         run: |
-          aws deploy push \
+          docker-compose run --rm aws deploy push \
           --application-name ${{ secrets.CODEDEPLOY_APP_NAME }} \
           --description "This is a revision for the ${{ secrets.CODEDEPLOY_APP_NAME }}-${{ github.sha }}" \
           --ignore-hidden-files \
@@ -42,7 +44,7 @@ jobs:
 
       - name: Create Deployment with CodeDeploy
         run: |
-          aws deploy create-deployment \
+          docker-compose run --rm aws deploy create-deployment \
            --application-name ${{ secrets.CODEDEPLOY_APP_NAME }} \
            --deployment-group-name ${{ secrets.CODEDEPLOY_DEPLOYMENT_GROUP }} \
            --file-exists-behavior OVERWRITE \
