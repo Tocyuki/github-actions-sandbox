@@ -21,12 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: dev
-    strategy:
-      matrix:
-        appname: ['${{ secrets.CODEDEPLOY_APP_NAME }}']
-        deployment-group: ['${{ secrets.CODEDEPLOY_DEPLOYMENT_GROUP }}']
-        s3-bucket: ['${{ secrets.S3_ARTIFACT_BUCKET }}']
-        s3-filename: ['${{ matrix.appname }}-${{ github.sha }}']
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:   
@@ -43,16 +37,16 @@ jobs:
       - name: Create revision with CodeDeploy
         run: |
           aws deploy push \
-          --application-name ${{ matrix.appname }} \
-          --description "This is a revision for the ${{ matrix.appname }}-${{ github.sha }}" \
+          --application-name ${{ secrets.CODEDEPLOY_APP_NAME }} \
+          --description "This is a revision for the ${{ secrets.CODEDEPLOY_APP_NAME }}-${{ github.sha }}" \
           --ignore-hidden-files \
-          --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
+          --s3-location s3://${{ secrets.S3_ARTIFACT_BUCKET }}/${{ secrets.CODEDEPLOY_APP_NAME }}-${{ github.sha }}.zip \
           --source .
 
       - name: Create Deployment with CodeDeploy
         run: |
           aws deploy create-deployment \
-           --application-name ${{ matrix.appname }} \
-           --deployment-group-name ${{ matrix.deployment-group }} \
+           --application-name ${{ secrets.CODEDEPLOY_APP_NAME }} \
+           --deployment-group-name ${{ secrets.CODEDEPLOY_DEPLOYMENT_GROUP }} \
            --file-exists-behavior OVERWRITE \
-           --s3-location bucket=${{ matrix.s3-bucket }},key=${{ matrix.s3-filename }}.zip,bundleType=zip \
+           --s3-location bucket=${{ secrets.S3_ARTIFACT_BUCKET }},key=${{ secrets.CODEDEPLOY_APP_NAME }}-${{ github.sha }}.zip,bundleType=zip \
