@@ -1,12 +1,9 @@
 name: Dev Test
 
 on:
-  push:
-    paths:
-      - 'src/dev/**'
   pull_request:
     paths:
-      - 'src/dev/**'
+      - 'src/dev/**.html'
 
 jobs:
   test:
