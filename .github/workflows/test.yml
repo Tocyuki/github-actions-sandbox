@@ -6,7 +6,7 @@ on:
       - opened
       - synchronize
     paths:
-      - 'src/*'
+      - 'src/**'
 
 jobs:
   test:
