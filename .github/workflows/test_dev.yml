@@ -1,8 +1,11 @@
 name: Dev Test
 
 on:
-  pull_request:
+  push:
+    branches:
+      - '!master'
     paths: 'src/dev/**'
+  pull_request:
 
 jobs:
   test:
