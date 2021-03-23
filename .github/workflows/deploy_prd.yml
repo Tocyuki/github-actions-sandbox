@@ -1,24 +1,25 @@
-name: Prd Test
+name: Prd Deploy
 
 on:
   pull_request:
-    paths:
+    types:
+      - closed
+    branches:
+      - master
+    paths: 
       - 'src/prd/**'
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     environment: prd
-    
     steps:
       - uses: actions/checkout@v2
 
       - name: Run a one-line script
-        run: echo {{ secrets.TEST_SECRETS }}
+        run: echo development
 
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-      - name: Run sleep script
-        run: sleep 30

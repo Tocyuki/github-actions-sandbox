@@ -1,4 +1,4 @@
-name: Deploy
+name: Dev Deploy
 
 on:
   pull_request:
@@ -7,16 +7,17 @@ on:
     branches:
       - master
     paths: 
-      - 'src/*'
+      - 'src/dev/**'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - uses: actions/checkout@v2
 
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo development
 
       - name: Run a multi-line script
         run: |
