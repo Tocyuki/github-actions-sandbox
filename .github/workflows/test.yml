@@ -1,18 +1,20 @@
-name: Test
+name: Dev Test
 
 on:
   pull_request:
     paths:
-      - 'src/**'
+      - 'src/dev/**'
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: dev
+    
     steps:
       - uses: actions/checkout@v2
 
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo {{ secrets.TEST_SECRETS }}
 
       - name: Run a multi-line script
         run: |
