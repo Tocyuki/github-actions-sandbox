@@ -2,8 +2,9 @@ name: Test
 
 on:
   pull_request:
+    types: [opened, synchronize]
     paths: 
-    - 'src/**'
+      - 'src/**'
 
 jobs:
   test:
