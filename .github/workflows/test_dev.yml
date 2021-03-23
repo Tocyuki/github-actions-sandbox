@@ -1,0 +1,25 @@
+name: Dev Test
+
+on:
+  pull_request:
+    paths:
+      - 'src/dev/**.html'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: dev
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run a one-line script
+        run: echo development 
+
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+
+      - name: Run sleep script
+        run: sleep 30
