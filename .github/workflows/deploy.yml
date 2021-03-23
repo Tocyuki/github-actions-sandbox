@@ -1,11 +1,13 @@
 name: Deploy
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - master
     paths: 
-      - 'src/**'
+      - 'src/*'
 
 jobs:
   deploy:
