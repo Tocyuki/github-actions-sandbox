@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
     branches:
       - master
-    paths: 
-      - 'src/prd/**'
 
 jobs:
   deploy:
@@ -15,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run a one-line script
-        run: echo development
+        run: echo production
 
       - name: Run a multi-line script
         run: |
